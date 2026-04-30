@@ -1,0 +1,146 @@
+from aiogram import Router, F
+from aiogram.filters import CommandStart
+from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, LinkPreviewOptions
+import database
+import content
+
+router = Router()
+
+async def send_step(bot, chat_id, day, step):
+    day_content = content.DAYS_CONTENT.get(day)
+    if not day_content:
+        return
+        
+    link_opts = LinkPreviewOptions(is_disabled=True)
+    
+    if step == 0:
+        text = day_content['intro']
+        btn = day_content.get('intro_btn')
+        if btn:
+            kb = InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text=btn, callback_data="next_step")]
+            ])
+            await bot.send_message(chat_id, text, reply_markup=kb, link_preview_options=link_opts)
+        else:
+            await bot.send_message(chat_id, text, link_preview_options=link_opts)
+            await database.update_user_state(chat_id, current_step=1)
+            await send_step(bot, chat_id, day, 1)
+            
+    elif step in [1, 2, 3, 4]:
+        text = day_content[f'step_{step}']
+        btn = day_content[f'step_{step}_btn']
+        kb = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text=btn, callback_data="next_step")]
+        ])
+        await bot.send_message(chat_id, text, reply_markup=kb, link_preview_options=link_opts)
+        
+    elif step == 5:
+        text = day_content['step_5']
+        btn = day_content['step_5_btn']
+        kb = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text=btn, callback_data="finish_day")],
+            [InlineKeyboardButton(text="Вернуться к материалам", callback_data="return_to_materials")]
+        ])
+        await bot.send_message(chat_id, text, reply_markup=kb, link_preview_options=link_opts)
+
+@router.message(CommandStart())
+async def cmd_start(message: Message):
+    user_id = message.from_user.id
+    username = message.from_user.username
+    
+    await database.add_user(user_id, username)
+    await database.update_user_state(user_id, current_day=0, current_step=0, status='onboarding')
+    
+    kb1 = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Посмотреть инструкцию", callback_data="show_instruction")]
+    ])
+    await message.answer(content.ONBOARDING_1, reply_markup=kb1)
+
+@router.callback_query(F.data == "show_instruction")
+async def show_instruction(callback: CallbackQuery):
+    try:
+        await callback.message.edit_reply_markup(reply_markup=None)
+    except:
+        pass
+    
+    kb2 = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Погнали", callback_data="start_day_1")]
+    ])
+    await callback.message.answer(content.ONBOARDING_2, reply_markup=kb2)
+    await callback.answer()
+
+@router.callback_query(F.data == "start_day_1")
+async def start_day_1(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    try:
+        await callback.message.edit_reply_markup(reply_markup=None)
+    except:
+        pass
+    
+    await database.update_user_state(user_id, current_day=1, current_step=0, status='day_1_started')
+    await send_step(callback.bot, callback.message.chat.id, 1, 0)
+    await callback.answer()
+
+@router.callback_query(F.data == "next_step")
+async def process_next_step(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    try:
+        await callback.message.edit_reply_markup(reply_markup=None)
+    except:
+        pass
+    
+    user = await database.get_user(user_id)
+    if not user:
+        await callback.answer("Ошибка")
+        return
+        
+    day = user['current_day']
+    current_step = user['current_step']
+    next_step_num = current_step + 1
+    
+    if next_step_num <= 5:
+        await database.update_user_state(user_id, current_step=next_step_num)
+        await send_step(callback.bot, callback.message.chat.id, day, next_step_num)
+    
+    await callback.answer()
+
+@router.callback_query(F.data == "return_to_materials")
+async def return_to_materials(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    try:
+        await callback.message.edit_reply_markup(reply_markup=None)
+    except:
+        pass
+    
+    user = await database.get_user(user_id)
+    if not user:
+        await callback.answer()
+        return
+        
+    day = user['current_day']
+    await database.update_user_state(user_id, current_step=1)
+    
+    await callback.message.answer("Возвращаемся к началу материалов сегодняшнего дня:")
+    await send_step(callback.bot, callback.message.chat.id, day, 1)
+    await callback.answer()
+
+@router.callback_query(F.data == "finish_day")
+async def finish_day(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    try:
+        await callback.message.edit_reply_markup(reply_markup=None)
+    except:
+        pass
+    
+    user = await database.get_user(user_id)
+    if not user:
+        await callback.answer()
+        return
+        
+    day = user['current_day']
+    
+    await database.update_user_state(user_id, current_step=6, status=f'completed_day_{day}', set_completed_date=True)
+    
+    day_content = content.DAYS_CONTENT[day]
+    await callback.message.answer(day_content['finish'])
+    await callback.answer()

@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: agentix_bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      # Пробрасываем папку data для базы данных, чтобы SQLite работал корректно
+      # и данные сохранялись при перезапуске/пересборке контейнера
+      - ./data:/app/data

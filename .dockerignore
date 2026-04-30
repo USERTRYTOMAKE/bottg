@@ -1,0 +1,33 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Environment variables
+.env
+
+# Database and data
+bot_database.db*
+data/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Other
+.claude
+outputs/
+shim-lib/
+shim-perm/
+uploads/
+audit.jsonl
