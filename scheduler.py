@@ -4,6 +4,8 @@ from apscheduler.triggers.cron import CronTrigger
 from aiogram import Bot
 import database
 
+scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
+
 async def send_next_day(bot: Bot):
     logging.info("Running scheduler check for next day materials...")
     users = await database.get_users_for_next_day()
@@ -30,14 +32,32 @@ async def send_next_day(bot: Bot):
         except Exception as e:
             logging.error(f"Failed to send next day to user {user_id}: {e}")
 
+async def check_day_completion(bot: Bot, user_id: int, day: int):
+    # Проверка: завершил ли пользователь день
+    user = await database.get_user(user_id)
+    if not user:
+        return
+    # Если день совпадает, но статус не completed_day_X (step < 6)
+    if user['current_day'] == day and user['current_step'] < 6:
+        # Отправляем напоминалку
+        import content
+        from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+        kb = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="Продолжить выполнение", callback_data="continue_execution")]
+        ])
+        try:
+            await bot.send_message(user_id, content.REMINDER_TEXT, reply_markup=kb)
+        except Exception as e:
+            logging.error(f"Failed to send reminder to {user_id}: {e}")
+
+def schedule_day_check(bot: Bot, user_id: int, day: int):
+    from datetime import datetime, timedelta
+    run_date = datetime.now() + timedelta(hours=2)
+    scheduler.add_job(check_day_completion, 'date', run_date=run_date, args=[bot, user_id, day])
+
 def setup_scheduler(bot: Bot):
-    scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
-    
     # Запуск каждый день в 08:00
     scheduler.add_job(send_next_day, CronTrigger(hour=9, minute=0), args=[bot])
-    
-    # Для отладки можно расскомментировать следующую строку (будет запускаться раз в минуту):
-    # scheduler.add_job(send_next_day, 'interval', minutes=1, args=[bot])
     
     scheduler.start()
     return scheduler

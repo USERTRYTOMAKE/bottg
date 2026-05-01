@@ -34,6 +34,11 @@ async def send_step(bot, chat_id, day, step):
         ])
         await bot.send_message(chat_id, text, reply_markup=kb, link_preview_options=link_opts)
         
+        if step == 1:
+            from scheduler import schedule_day_check
+            schedule_day_check(bot, chat_id, day)
+
+        
     elif step == 5:
         text = day_content['step_5']
         btn = day_content['step_5_btn']
@@ -143,4 +148,25 @@ async def finish_day(callback: CallbackQuery):
     
     day_content = content.DAYS_CONTENT[day]
     await callback.message.answer(day_content['finish'])
+    await callback.answer()
+
+@router.callback_query(F.data == "continue_execution")
+async def continue_execution(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    try:
+        await callback.message.edit_reply_markup(reply_markup=None)
+    except:
+        pass
+    
+    user = await database.get_user(user_id)
+    if not user:
+        await callback.answer()
+        return
+        
+    day = user['current_day']
+    current_step = user['current_step']
+    
+    # Отправляем пользователю текущий шаг
+    await callback.message.answer("Продолжаем выполнение задания:")
+    await send_step(callback.bot, callback.message.chat.id, day, current_step)
     await callback.answer()
