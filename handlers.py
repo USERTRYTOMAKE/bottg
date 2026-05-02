@@ -28,17 +28,22 @@ async def send_step(bot, chat_id, day, step):
             
     elif step in [1, 2, 3, 4]:
         text = day_content[f'step_{step}']
-        btn = day_content[f'step_{step}_btn']
-        kb = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text=btn, callback_data="next_step")]
-        ])
-        await bot.send_message(chat_id, text, reply_markup=kb, link_preview_options=link_opts)
+        btn = day_content.get(f'step_{step}_btn')
         
-        if step == 1:
+        if btn:
+            kb = InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text=btn, callback_data="next_step")]
+            ])
+            await bot.send_message(chat_id, text, reply_markup=kb, link_preview_options=link_opts)
+        else:
+            await bot.send_message(chat_id, text, link_preview_options=link_opts)
+            await database.update_user_state(chat_id, current_step=step+1)
+            await send_step(bot, chat_id, day, step+1)
+            return
+        
+        if step == 1 or (step == 2 and not day_content.get('step_1_btn')):
             from scheduler import schedule_day_check
             schedule_day_check(bot, chat_id, day)
-
-        
     elif step == 5:
         text = day_content['step_5']
         btn = day_content['step_5_btn']
