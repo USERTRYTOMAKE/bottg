@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, LinkPreviewOptions
+import asyncio
 import database
 import content
 
@@ -24,6 +25,7 @@ async def send_step(bot, chat_id, day, step):
         else:
             await bot.send_message(chat_id, text, link_preview_options=link_opts)
             await database.update_user_state(chat_id, current_step=1)
+            await asyncio.sleep(3)
             await send_step(bot, chat_id, day, 1)
             
     elif step in [1, 2, 3, 4]:
@@ -38,12 +40,10 @@ async def send_step(bot, chat_id, day, step):
         else:
             await bot.send_message(chat_id, text, link_preview_options=link_opts)
             await database.update_user_state(chat_id, current_step=step+1)
+            await asyncio.sleep(3)
             await send_step(bot, chat_id, day, step+1)
             return
         
-        if step == 1 or (step == 2 and not day_content.get('step_1_btn')):
-            from scheduler import schedule_day_check
-            schedule_day_check(bot, chat_id, day)
     elif step == 5:
         text = day_content['step_5']
         btn = day_content['step_5_btn']
@@ -61,23 +61,11 @@ async def cmd_start(message: Message):
     await database.add_user(user_id, username)
     await database.update_user_state(user_id, current_day=0, current_step=0, status='onboarding')
     
-    kb1 = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Посмотреть инструкцию", callback_data="show_instruction")]
-    ])
-    await message.answer(content.ONBOARDING_1, reply_markup=kb1)
-
-@router.callback_query(F.data == "show_instruction")
-async def show_instruction(callback: CallbackQuery):
-    try:
-        await callback.message.edit_reply_markup(reply_markup=None)
-    except:
-        pass
-    
-    kb2 = InlineKeyboardMarkup(inline_keyboard=[
+    kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Погнали", callback_data="start_day_1")]
     ])
-    await callback.message.answer(content.ONBOARDING_2, reply_markup=kb2)
-    await callback.answer()
+    link_opts = LinkPreviewOptions(is_disabled=True)
+    await message.answer(content.ONBOARDING_2, reply_markup=kb, parse_mode="HTML", link_preview_options=link_opts)
 
 @router.callback_query(F.data == "start_day_1")
 async def start_day_1(callback: CallbackQuery):
@@ -87,8 +75,10 @@ async def start_day_1(callback: CallbackQuery):
     except:
         pass
     
-    await database.update_user_state(user_id, current_day=1, current_step=0, status='day_1_started')
-    await send_step(callback.bot, callback.message.chat.id, 1, 0)
+    await database.update_user_state(user_id, current_day=1, current_step=1, status='day_1_started')
+    from scheduler import schedule_day_check
+    schedule_day_check(callback.bot, user_id, 1)
+    await send_step(callback.bot, callback.message.chat.id, 1, 1)
     await callback.answer()
 
 @router.callback_query(F.data == "next_step")
@@ -171,7 +161,5 @@ async def continue_execution(callback: CallbackQuery):
     day = user['current_day']
     current_step = user['current_step']
     
-    # Отправляем пользователю текущий шаг
-    await callback.message.answer("Продолжаем выполнение задания:")
     await send_step(callback.bot, callback.message.chat.id, day, current_step)
     await callback.answer()

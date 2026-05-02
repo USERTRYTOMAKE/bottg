@@ -21,11 +21,12 @@ async def send_next_day(bot: Bot):
         current_day = user['current_day']
         next_day = current_day + 1
         
-        if next_day > 3:
+        if next_day > 4:
             continue
             
         logging.info(f"Transitioning user {user_id} to day {next_day}")
         await database.update_user_state(user_id, current_day=next_day, current_step=0, status=f'day_{next_day}_started')
+        schedule_day_check(bot, user_id, next_day)
         
         try:
             await send_step(bot, user_id, next_day, 0)
@@ -52,8 +53,14 @@ async def check_day_completion(bot: Bot, user_id: int, day: int):
 
 def schedule_day_check(bot: Bot, user_id: int, day: int):
     from datetime import datetime, timedelta
+    job_id = f"day_check_{user_id}_{day}"
+    # Удаляем старый джоб если есть, чтобы не было дублей
+    existing = scheduler.get_job(job_id)
+    if existing:
+        existing.remove()
     run_date = datetime.now() + timedelta(hours=2)
-    scheduler.add_job(check_day_completion, 'date', run_date=run_date, args=[bot, user_id, day])
+    scheduler.add_job(check_day_completion, 'date', run_date=run_date, args=[bot, user_id, day], id=job_id)
+    logging.info(f"Scheduled day check for user {user_id}, day {day} at {run_date}")
 
 def setup_scheduler(bot: Bot):
     # Запуск каждый день в 08:00
