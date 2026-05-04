@@ -1,11 +1,18 @@
 import aiosqlite
 import datetime
-
 import os
+from zoneinfo import ZoneInfo
 
 DB_DIR = "data"
 os.makedirs(DB_DIR, exist_ok=True)
 DB_NAME = os.path.join(DB_DIR, "bot_database.db")
+MOSCOW_TZ = ZoneInfo("Europe/Moscow")
+
+def get_moscow_now():
+    return datetime.datetime.now(MOSCOW_TZ)
+
+def get_moscow_date_iso():
+    return get_moscow_now().date().isoformat()
 
 async def init_db():
     async with aiosqlite.connect(DB_NAME) as db:
@@ -32,7 +39,7 @@ async def init_db():
 
 async def add_user(user_id: int, username: str):
     async with aiosqlite.connect(DB_NAME) as db:
-        now = datetime.datetime.now().isoformat()
+        now = get_moscow_now().isoformat()
         await db.execute('''
             INSERT OR IGNORE INTO users (user_id, username, registration_date)
             VALUES (?, ?, ?)
@@ -64,7 +71,7 @@ async def update_user_state(user_id: int, current_day: int = None, current_step:
             params.append(status)
         if set_completed_date:
             updates.append("last_completed_date = ?")
-            params.append(datetime.date.today().isoformat())
+            params.append(get_moscow_date_iso())
             
         if not updates:
             return
@@ -77,11 +84,11 @@ async def update_user_state(user_id: int, current_day: int = None, current_step:
         
 async def get_users_for_next_day():
     async with aiosqlite.connect(DB_NAME) as db:
-        today = datetime.date.today().isoformat()
+        today = get_moscow_date_iso()
         async with db.execute('''
             SELECT * FROM users 
             WHERE status LIKE 'completed_day_%' 
-            AND last_completed_date < ?
+            AND (last_completed_date IS NULL OR last_completed_date < ?)
         ''', (today,)) as cursor:
             columns = [col[0] for col in cursor.description]
             rows = await cursor.fetchall()
