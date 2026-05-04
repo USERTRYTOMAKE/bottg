@@ -65,7 +65,7 @@ def schedule_day_check(bot: Bot, user_id: int, day: int):
     existing = scheduler.get_job(job_id)
     if existing:
         existing.remove()
-    run_date = datetime.now(MOSCOW_TZ) + timedelta(hours=2)
+    run_date = datetime.now(MOSCOW_TZ) + timedelta(hours=1)
     scheduler.add_job(check_day_completion, 'date', run_date=run_date, args=[bot, user_id, day], id=job_id)
     logging.info(f"Scheduled day check for user {user_id}, day {day} at {run_date}")
 
