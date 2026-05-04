@@ -93,3 +93,15 @@ async def get_users_for_next_day():
             columns = [col[0] for col in cursor.description]
             rows = await cursor.fetchall()
             return [dict(zip(columns, row)) for row in rows]
+
+async def get_unfinished_started_users():
+    async with aiosqlite.connect(DB_NAME) as db:
+        async with db.execute('''
+            SELECT * FROM users
+            WHERE status LIKE 'day_%_started'
+            AND current_day BETWEEN 1 AND 4
+            AND current_step < 6
+        ''') as cursor:
+            columns = [col[0] for col in cursor.description]
+            rows = await cursor.fetchall()
+            return [dict(zip(columns, row)) for row in rows]

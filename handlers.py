@@ -140,6 +140,8 @@ async def finish_day(callback: CallbackQuery):
     day = user['current_day']
     
     await database.update_user_state(user_id, current_step=6, status=f'completed_day_{day}', set_completed_date=True)
+    from scheduler import cancel_day_check
+    cancel_day_check(user_id, day)
     
     day_content = content.DAYS_CONTENT[day]
     await callback.message.answer(day_content['finish'])
