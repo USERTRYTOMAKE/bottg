@@ -1,11 +1,42 @@
+import asyncio
+import logging
+
 from aiogram import Router, F
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, LinkPreviewOptions
-import asyncio
 import database
 import content
 
 router = Router()
+
+async def remove_inline_keyboard(callback: CallbackQuery):
+    if not callback.message:
+        return
+
+    try:
+        await callback.bot.edit_message_reply_markup(
+            chat_id=callback.message.chat.id,
+            message_id=callback.message.message_id,
+            reply_markup=None,
+        )
+    except TelegramBadRequest as e:
+        error_text = str(e).lower()
+        if "message is not modified" in error_text:
+            return
+        logging.warning(
+            "Failed to remove inline keyboard from message %s for user %s: %s",
+            callback.message.message_id,
+            callback.from_user.id,
+            e,
+        )
+    except Exception as e:
+        logging.exception(
+            "Unexpected error while removing inline keyboard from message %s for user %s: %s",
+            callback.message.message_id,
+            callback.from_user.id,
+            e,
+        )
 
 async def send_step(bot, chat_id, day, step):
     day_content = content.DAYS_CONTENT.get(day)
@@ -59,7 +90,14 @@ async def cmd_start(message: Message):
     username = message.from_user.username
     
     await database.add_user(user_id, username)
-    await database.update_user_state(user_id, current_day=0, current_step=0, status='onboarding')
+    await database.update_user_state(
+        user_id,
+        current_day=0,
+        current_step=0,
+        status='onboarding',
+        reminder_count=0,
+        clear_next_reminder=True,
+    )
     
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Погнали", callback_data="start_day_1")]
@@ -70,24 +108,23 @@ async def cmd_start(message: Message):
 @router.callback_query(F.data == "start_day_1")
 async def start_day_1(callback: CallbackQuery):
     user_id = callback.from_user.id
-    try:
-        await callback.message.edit_reply_markup(reply_markup=None)
-    except:
-        pass
+    await remove_inline_keyboard(callback)
     
-    await database.update_user_state(user_id, current_day=1, current_step=1, status='day_1_started')
-    from scheduler import schedule_day_check
-    schedule_day_check(callback.bot, user_id, 1)
+    from scheduler import FIRST_REMINDER_DELAY, schedule_day_check
+    next_reminder_at = await database.start_user_day(
+        user_id,
+        day=1,
+        current_step=1,
+        reminder_delay=FIRST_REMINDER_DELAY,
+    )
+    schedule_day_check(callback.bot, user_id, 1, next_reminder_at)
     await send_step(callback.bot, callback.message.chat.id, 1, 1)
     await callback.answer()
 
 @router.callback_query(F.data == "next_step")
 async def process_next_step(callback: CallbackQuery):
     user_id = callback.from_user.id
-    try:
-        await callback.message.edit_reply_markup(reply_markup=None)
-    except:
-        pass
+    await remove_inline_keyboard(callback)
     
     user = await database.get_user(user_id)
     if not user:
@@ -107,10 +144,7 @@ async def process_next_step(callback: CallbackQuery):
 @router.callback_query(F.data == "return_to_materials")
 async def return_to_materials(callback: CallbackQuery):
     user_id = callback.from_user.id
-    try:
-        await callback.message.edit_reply_markup(reply_markup=None)
-    except:
-        pass
+    await remove_inline_keyboard(callback)
     
     user = await database.get_user(user_id)
     if not user:
@@ -127,10 +161,7 @@ async def return_to_materials(callback: CallbackQuery):
 @router.callback_query(F.data == "finish_day")
 async def finish_day(callback: CallbackQuery):
     user_id = callback.from_user.id
-    try:
-        await callback.message.edit_reply_markup(reply_markup=None)
-    except:
-        pass
+    await remove_inline_keyboard(callback)
     
     user = await database.get_user(user_id)
     if not user:
@@ -140,6 +171,7 @@ async def finish_day(callback: CallbackQuery):
     day = user['current_day']
     
     await database.update_user_state(user_id, current_step=6, status=f'completed_day_{day}', set_completed_date=True)
+    await database.clear_user_reminders(user_id)
     from scheduler import cancel_day_check
     cancel_day_check(user_id, day)
     
@@ -150,10 +182,7 @@ async def finish_day(callback: CallbackQuery):
 @router.callback_query(F.data == "continue_execution")
 async def continue_execution(callback: CallbackQuery):
     user_id = callback.from_user.id
-    try:
-        await callback.message.edit_reply_markup(reply_markup=None)
-    except:
-        pass
+    await remove_inline_keyboard(callback)
     
     user = await database.get_user(user_id)
     if not user:
