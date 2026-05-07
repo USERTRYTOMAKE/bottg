@@ -33,7 +33,7 @@ async def send_next_day(bot: Bot):
         current_day = user['current_day']
         next_day = current_day + 1
         
-        if next_day > 4:
+        if next_day > 10:
             continue
             
         logging.info(f"Transitioning user {user_id} to day {next_day}")
