@@ -12,9 +12,9 @@ DAILY_JOB_ID = "send_next_day_daily"
 STARTUP_CATCH_UP_JOB_ID = "send_next_day_startup_catch_up"
 RESTORE_DAY_CHECKS_JOB_ID = "restore_day_checks_on_startup"
 DAILY_SEND_TIME = time(hour=9, minute=0)
-FIRST_REMINDER_DELAY = timedelta(hours=1)
-SECOND_REMINDER_DELAY = timedelta(hours=1)
-FOLLOW_UP_REMINDER_DELAY = timedelta(hours=12)
+FIRST_REMINDER_DELAY = timedelta(hours=2)
+SECOND_REMINDER_DELAY = timedelta(hours=24)
+MAX_DAYS = 15
 
 scheduler = AsyncIOScheduler(timezone=MOSCOW_TZ)
 
@@ -33,7 +33,7 @@ async def send_next_day(bot: Bot):
         current_day = user['current_day']
         next_day = current_day + 1
         
-        if next_day > 10:
+        if next_day > MAX_DAYS:
             continue
             
         logging.info(f"Transitioning user {user_id} to day {next_day}")
@@ -50,54 +50,57 @@ async def send_next_day(bot: Bot):
         except Exception as e:
             logging.error(f"Failed to send next day to user {user_id}: {e}")
 
-async def check_day_completion(bot: Bot, user_id: int, day: int):
-    # Проверка: завершил ли пользователь день
+async def check_day_completion_2h(bot: Bot, user_id: int, day: int):
+    """Проверка через 2 часа — напоминание с возвратом на текущий день."""
     user = await database.get_user(user_id)
     if not user:
-        cancel_day_check(user_id, day)
         return
-    # Если день совпадает, но статус не completed_day_X (step < 6)
     if user['current_day'] != day or user['current_step'] >= 6:
-        cancel_day_check(user_id, day)
         await database.clear_user_reminders(user_id)
         return
 
-    # Отправляем напоминалку и планируем следующий запуск по цепочке 1ч, 1ч, 12ч...
     import content
     from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Продолжить выполнение", callback_data="continue_execution")]
     ])
-    reminder_count = user.get('reminder_count') or 0
     try:
-        await bot.send_message(user_id, content.REMINDER_TEXT, reply_markup=kb)
-        reminder_count += 1
-        logging.info(
-            f"Sent reminder #{reminder_count} to user {user_id}, day {day}, current_step {user['current_step']}"
-        )
+        await bot.send_message(user_id, content.REMINDER_TEXT_2H, reply_markup=kb)
+        logging.info(f"Sent 2h reminder to user {user_id}, day {day}")
     except Exception as e:
-        logging.error(f"Failed to send reminder to {user_id}: {e}")
+        logging.error(f"Failed to send 2h reminder to {user_id}: {e}")
 
-    next_run = datetime.now(MOSCOW_TZ) + get_next_reminder_delay(reminder_count)
-    await database.update_reminder_state(user_id, reminder_count, next_run.isoformat())
-    schedule_day_check(bot, user_id, day, next_run)
 
-def get_day_check_job_id(user_id: int, day: int) -> str:
-    return f"day_check_{user_id}_{day}"
+async def check_day_completion_24h(bot: Bot, user_id: int, day: int):
+    """Проверка через 24 часа — напоминание с возвратом на вчерашний день."""
+    user = await database.get_user(user_id)
+    if not user:
+        return
+    if user['current_day'] != day or user['current_step'] >= 6:
+        await database.clear_user_reminders(user_id)
+        return
+
+    import content
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Продолжить выполнение", callback_data="continue_execution_yesterday")]
+    ])
+    try:
+        await bot.send_message(user_id, content.REMINDER_TEXT_24H, reply_markup=kb)
+        logging.info(f"Sent 24h reminder to user {user_id}, day {day}")
+    except Exception as e:
+        logging.error(f"Failed to send 24h reminder to {user_id}: {e}")
+
+def get_day_check_job_id(user_id: int, day: int, suffix: str) -> str:
+    return f"day_check_{user_id}_{day}_{suffix}"
 
 def cancel_day_check(user_id: int, day: int):
-    job_id = get_day_check_job_id(user_id, day)
-    existing = scheduler.get_job(job_id)
-    if existing:
-        existing.remove()
-        logging.info(f"Cancelled day check for user {user_id}, day {day}")
-
-def get_next_reminder_delay(reminder_count: int) -> timedelta:
-    if reminder_count <= 0:
-        return FIRST_REMINDER_DELAY
-    if reminder_count == 1:
-        return SECOND_REMINDER_DELAY
-    return FOLLOW_UP_REMINDER_DELAY
+    for suffix in ("2h", "24h"):
+        job_id = get_day_check_job_id(user_id, day, suffix)
+        existing = scheduler.get_job(job_id)
+        if existing:
+            existing.remove()
+            logging.info(f"Cancelled {suffix} day check for user {user_id}, day {day}")
 
 def parse_moscow_datetime(value) -> datetime | None:
     if isinstance(value, datetime):
@@ -112,23 +115,41 @@ def parse_moscow_datetime(value) -> datetime | None:
     return parsed.astimezone(MOSCOW_TZ)
 
 def schedule_day_check(bot: Bot, user_id: int, day: int, run_date=None):
-    job_id = get_day_check_job_id(user_id, day)
-    # Удаляем старый джоб если есть, чтобы не было дублей
-    existing = scheduler.get_job(job_id)
+    """Планирует оба таймера: 2ч и 24ч после открытия дня."""
+    now = datetime.now(MOSCOW_TZ)
+
+    run_2h = parse_moscow_datetime(run_date) or now + FIRST_REMINDER_DELAY
+    job_id_2h = get_day_check_job_id(user_id, day, "2h")
+    existing = scheduler.get_job(job_id_2h)
     if existing:
         existing.remove()
-    run_date = parse_moscow_datetime(run_date) or datetime.now(MOSCOW_TZ) + FIRST_REMINDER_DELAY
     scheduler.add_job(
-        check_day_completion,
+        check_day_completion_2h,
         'date',
-        run_date=run_date,
+        run_date=run_2h,
         args=[bot, user_id, day],
-        id=job_id,
+        id=job_id_2h,
         replace_existing=True,
         max_instances=1,
-        misfire_grace_time=int(FOLLOW_UP_REMINDER_DELAY.total_seconds()),
+        misfire_grace_time=int(SECOND_REMINDER_DELAY.total_seconds()),
     )
-    logging.info(f"Scheduled day check for user {user_id}, day {day}, next run at {run_date}")
+
+    run_24h = now + SECOND_REMINDER_DELAY
+    job_id_24h = get_day_check_job_id(user_id, day, "24h")
+    existing = scheduler.get_job(job_id_24h)
+    if existing:
+        existing.remove()
+    scheduler.add_job(
+        check_day_completion_24h,
+        'date',
+        run_date=run_24h,
+        args=[bot, user_id, day],
+        id=job_id_24h,
+        replace_existing=True,
+        max_instances=1,
+        misfire_grace_time=int(SECOND_REMINDER_DELAY.total_seconds()),
+    )
+    logging.info(f"Scheduled 2h check at {run_2h} and 24h check at {run_24h} for user {user_id}, day {day}")
 
 async def restore_day_checks(bot: Bot):
     users = await database.get_unfinished_started_users()
@@ -138,14 +159,10 @@ async def restore_day_checks(bot: Bot):
 
     now = datetime.now(MOSCOW_TZ)
     for user in users:
-        reminder_count = user.get('reminder_count') or 0
         next_run = parse_moscow_datetime(user.get('next_reminder_at'))
-        if not next_run:
-            next_run = now + get_next_reminder_delay(reminder_count)
-            await database.update_reminder_state(user['user_id'], reminder_count, next_run.isoformat())
-        elif next_run <= now:
+        if not next_run or next_run <= now:
             next_run = now + timedelta(seconds=5)
-            await database.update_reminder_state(user['user_id'], reminder_count, next_run.isoformat())
+            await database.update_reminder_state(user['user_id'], user.get('reminder_count') or 0, next_run.isoformat())
 
         schedule_day_check(bot, user['user_id'], user['current_day'], next_run)
     logging.info(f"Restored day checks for {len(users)} unfinished users.")

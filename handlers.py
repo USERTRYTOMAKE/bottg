@@ -181,16 +181,35 @@ async def finish_day(callback: CallbackQuery):
 
 @router.callback_query(F.data == "continue_execution")
 async def continue_execution(callback: CallbackQuery):
+    """Возврат на текущий день (напоминание 2ч)."""
     user_id = callback.from_user.id
     await remove_inline_keyboard(callback)
-    
+
     user = await database.get_user(user_id)
     if not user:
         await callback.answer()
         return
-        
+
     day = user['current_day']
     current_step = user['current_step']
-    
+
     await send_step(callback.bot, callback.message.chat.id, day, current_step)
+    await callback.answer()
+
+@router.callback_query(F.data == "continue_execution_yesterday")
+async def continue_execution_yesterday(callback: CallbackQuery):
+    """Возврат на вчерашний день (напоминание 24ч)."""
+    user_id = callback.from_user.id
+    await remove_inline_keyboard(callback)
+
+    user = await database.get_user(user_id)
+    if not user:
+        await callback.answer()
+        return
+
+    day = user['current_day']
+    current_step = user['current_step']
+
+    await callback.message.answer("Возвращаемся к началу вчерашнего дня:")
+    await send_step(callback.bot, callback.message.chat.id, day, 1)
     await callback.answer()
