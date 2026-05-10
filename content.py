@@ -262,17 +262,17 @@ https://drive.google.com/drive/folders/1A6amHiMqzngJSrq04XOErY_ec-EG3LwT""",
         "step_1_btn": "Текст готов",
 
         "step_2": """<b>Шаг 2. Получи обложку:</b>
-https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=share_link
+https://drive.google.com/drive/folders/1w1UNmRStRyvCxTdvSA9N_dMLNnggChuX?usp=sharing
 
 Готовый визуал для оформления сегодняшнего поста.""",
         "step_2_btn": "Визуал забрал",
 
         "step_3": """<b>Шаг 3. Подбери ролик, который лучше всего усилит сегодняшний контент:</b>
-https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=share_link""",
+https://drive.google.com/drive/folders/1EjUENlwCRKl2O22kCZsaLYXVKaXO1l59?usp=sharing""",
         "step_3_btn": "Видео готово",
 
         "step_4": """<b>Шаг 4. Забери Stories:</b>
-https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=share_link
+https://drive.google.com/drive/folders/11itKhYuDVp-ZJB63CkCZDM7QTt_R8g_Q?usp=sharing
 
 Используй stories как дополнительный прогрев аудитории в течение дня.""",
         "step_4_btn": "Stories готовы",
