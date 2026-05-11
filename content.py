@@ -479,17 +479,17 @@ https://drive.google.com/drive/folders/1tE79YZvcmjZuVLM4IpfRlkK7He758XQY?usp=sha
         "step_1_btn": "Текст готов",
 
         "step_2": """<b>Шаг 2. Получи обложку:</b>
-https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=share_link
+https://drive.google.com/drive/folders/1mOfdYHlW2YNypLje_S6Zt9ZjkDQz4P?usp=sharing
 
 Готовый визуал для оформления сегодняшнего поста.""",
         "step_2_btn": "Визуал забрал",
 
         "step_3": """<b>Шаг 3. Подбери ролик, который лучше всего усилит сегодняшний контент:</b>
-https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=share_link""",
+https://drive.google.com/drive/folders/1KZvzyGVs7wvDHiOQHC015X8vX3f-GFCs?usp=sharing""",
         "step_3_btn": "Видео готово",
 
         "step_4": """<b>Шаг 4. Забери Stories:</b>
-https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=share_link
+https://drive.google.com/drive/folders/1_50nIWgurKVrRpYV_6h3-GnptkCHPzvA?usp=sharing
 
 Используй stories как дополнительный прогрев аудитории в течение дня.""",
         "step_4_btn": "Stories готовы",
@@ -529,17 +529,17 @@ https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=sha
         "step_1_btn": "Текст выбран",
 
         "step_2": """<b>Шаг 2. Получи обложку:</b>
-https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=share_link
+https://drive.google.com/drive/folders/1D0Un/wm6zvPI8xNkaZZynhDQiN1Z7c?usp=sharing
 
 Используй готовую обложку для оформления сегодняшнего поста.""",
         "step_2_btn": "Обложка получена",
 
         "step_3": """<b>Шаг 3. Определи, какой ролик лучше всего дополнит сегодняшний контент:</b>
-https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=share_link""",
+https://drive.google.com/drive/folders/12lrWAXrR-TsqjRtlqdBFo2BToMpgqsmC?usp=sharing""",
         "step_3_btn": "Видео выбрано",
 
         "step_4": """<b>Шаг 4. Забери Stories:</b>
-https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=share_link
+https://drive.google.com/drive/folders/18rY4sr4S-FKPXCSb4JQ5t3dG09mhnDRp?usp=sharing
 
 Stories готовы — используй их как дополнительное касание с аудиторией.""",
         "step_4_btn": "Stories сохранены",
