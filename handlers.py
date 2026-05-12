@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import os
 
 from aiogram import Router, F
 from aiogram.exceptions import TelegramBadRequest
@@ -9,6 +10,31 @@ import database
 import content
 
 router = Router()
+
+_FAST_FORWARD_USER_IDS_CACHE = None
+
+def get_fast_forward_user_ids() -> set[int]:
+    global _FAST_FORWARD_USER_IDS_CACHE
+
+    raw_value = os.getenv("FAST_FORWARD_USER_IDS", "")
+    if (
+        _FAST_FORWARD_USER_IDS_CACHE
+        and _FAST_FORWARD_USER_IDS_CACHE[0] == raw_value
+    ):
+        return _FAST_FORWARD_USER_IDS_CACHE[1]
+
+    user_ids = set()
+    for value in raw_value.replace(";", ",").split(","):
+        value = value.strip()
+        if not value:
+            continue
+        try:
+            user_ids.add(int(value))
+        except ValueError:
+            logging.warning("Ignoring invalid FAST_FORWARD_USER_IDS value: %s", value)
+
+    _FAST_FORWARD_USER_IDS_CACHE = (raw_value, user_ids)
+    return user_ids
 
 async def remove_inline_keyboard(callback: CallbackQuery):
     if not callback.message:
@@ -172,12 +198,26 @@ async def finish_day(callback: CallbackQuery):
     
     await database.update_user_state(user_id, current_step=6, status=f'completed_day_{day}', set_completed_date=True)
     await database.clear_user_reminders(user_id)
-    from scheduler import cancel_day_check
+    from scheduler import FIRST_REMINDER_DELAY, MAX_DAYS, cancel_day_check, schedule_day_check
     cancel_day_check(user_id, day)
     
     day_content = content.DAYS_CONTENT[day]
     await callback.message.answer(day_content['finish'])
     await callback.answer()
+
+    if user_id in get_fast_forward_user_ids():
+        next_day = day + 1
+        if next_day <= MAX_DAYS:
+            next_reminder_at = await database.start_user_day(
+                user_id,
+                next_day,
+                current_step=0,
+                reminder_delay=FIRST_REMINDER_DELAY,
+            )
+            schedule_day_check(callback.bot, user_id, next_day, next_reminder_at)
+            await send_step(callback.bot, callback.message.chat.id, next_day, 0)
+        else:
+            logging.info("Fast-forward user %s completed final day %s", user_id, day)
 
 @router.callback_query(F.data == "continue_execution")
 async def continue_execution(callback: CallbackQuery):
