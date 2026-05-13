@@ -167,11 +167,11 @@ https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=sha
         "step_2_btn": "Визуал забрал",
         
         "step_3": """<b>Шаг 3. Выбери ролик, которое лучше всего подходит под твою аудиторию и формат:</b>
-https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=share_link""",
+https://drive.google.com/drive/folders/1imUPlIGxPW2JRiyCbcZ0Z3F8xexZqFs?usp=sharing""",
         "step_3_btn": "Видео готово",
         
         "step_4": """<b>Шаг 4. Забери готовые Stories и используй их как часть сегодняшнего прогрева:</b>
-https://drive.google.com/drive/folders/1k10nQy3ujazHAcINHTM8ZaGc0sooM1iU?usp=share_link""",
+https://drive.google.com/drive/folders/1JK-kWnRI9xpx1ZQPQ-KUMug3_X2STpfU?usp=sharing""",
         "step_4_btn": "Stories готовы",
         
         "step_5": """<b>Шаг 5. Публикация</b>
@@ -268,7 +268,7 @@ https://drive.google.com/drive/folders/1w1UNmRStRyvCxTdvSA9N_dMLNnggChuX?usp=sha
         "step_2_btn": "Визуал забрал",
 
         "step_3": """<b>Шаг 3. Подбери ролик, который лучше всего усилит сегодняшний контент:</b>
-https://drive.google.com/drive/folders/1EjUENlwCRKl2O22kCZsaLYXVKaXO1l59?usp=sharing""",
+https://drive.google.com/drive/folders/1EjUENlwCRKI2O22kCZsaLYXVKaXO1I59?usp=sharing""",
         "step_3_btn": "Видео готово",
 
         "step_4": """<b>Шаг 4. Забери Stories:</b>
@@ -316,17 +316,17 @@ https://drive.google.com/drive/folders/11itKhYuDVp-ZJB63CkCZDM7QTt_R8g_Q?usp=sha
         "step_1_btn": "Текст выбран",
 
         "step_2": """<b>Шаг 2. Забери обложку для поста:</b>
-https://drive.google.com/drive/folders/1BMDuBeMFAnEVwugKuS44fT2_quwAw95t?usp=sharing
+https://drive.google.com/drive/folders/1BMDuBeMFanEVwugKuS44fT2_quwAw95t?usp=sharing
 
 Готовый визуал для оформления сегодняшнего поста.""",
         "step_2_btn": "Обложка сохранена",
 
         "step_3": """<b>Шаг 3. Выбери ролик, который лучше всего подходит под твой формат и стиль ведения аккаунта:</b>
-https://drive.google.com/drive/folders/1V_rD8c645HglT2zpbvw0BtYq0o2TIMaC?usp=sharing""",
+https://drive.google.com/drive/folders/1V_rD8c645HglT2zpbvw0BtYq0o2TiMaC?usp=sharing""",
         "step_3_btn": "Видео выбрано",
 
         "step_4": """<b>Шаг 4. Получи Stories:</b>
-https://drive.google.com/drive/folders/1IkF9vEZLisPXCtNf0jYvQTPatSB8ILwQ?usp=sharing""",
+https://drive.google.com/drive/folders/1IkF9vEZLisPxCtNf0jYvQTPatSB8ILwO?usp=sharing""",
         "step_4_btn": "Stories готовы",
 
         "step_5": """<b>Шаг 5. Уникализация и публикация</b>
@@ -368,7 +368,7 @@ https://drive.google.com/drive/folders/1IkF9vEZLisPXCtNf0jYvQTPatSB8ILwQ?usp=sha
         "step_1_btn": "Текст выбран",
 
         "step_2": """<b>Шаг 2. Получи обложку:</b>
-https://drive.google.com/drive/folders/1RHjo7ehXNfp220ViepWW1sdqEjz8Q70X?usp=sharing
+https://drive.google.com/drive/folders/1RHjo7ehxNfp220ViepWW1sdqEjz8Q70X?usp=sharing
 
 """,
         "step_2_btn": "Визуал забрал",
@@ -429,12 +429,12 @@ Stories подготовлены заранее — просто добавь и
         "step_1_btn": "Текст готов",
 
         "step_2": """<b>Шаг 2. Получи обложку:</b>
-https://drive.google.com/drive/folders/1RHjo7ehXNfp220ViepWW1sdqEjz8Q70X?usp=sharing
+https://drive.google.com/drive/folders/1hVwh3rNdBoBy0uXAKglSr_iQI0NyHT4y?usp=sharing
 
 Готовое визуальное оформление для сегодняшней публикации.""",
         "step_2_btn": "Обложка сохранена",
 
-        "step_3": """<b>Шаг 3. Выбери видео:</b> https://drive.google.com/drive/folders/1odambOt_Fov4xdf4D2HknNPWTJHRIzER?usp=sharing""",
+        "step_3": """<b>Шаг 3. Выбери видео:</b> https://drive.google.com/drive/folders/1tGUmeeGvuUloWlPKIsNXv0Dq3V9TIZ3n?usp=sharing""",
         "step_3_btn": "Видео готово",
 
         "step_4": """<b>Шаг 4. Забери Stories:</b>
@@ -529,17 +529,17 @@ https://drive.google.com/drive/folders/1_S0nlWgurKVrRpYV_6h3-GnptkcHPzvA?usp=sha
         "step_1_btn": "Текст выбран",
 
         "step_2": """<b>Шаг 2. Получи обложку:</b>
-https://drive.google.com/drive/folders/1D6UnjrwrnGzvPIRxNkaZZynhDOiN1Z7c?usp=sharing
+https://drive.google.com/drive/folders/1D6UnjrwrnGzvPlRxNkaZZynhDOIN1Z7c?usp=sharing
 
 Используй готовую обложку для оформления сегодняшнего поста.""",
         "step_2_btn": "Обложка получена",
 
         "step_3": """<b>Шаг 3. Определи, какой ролик лучше всего дополнит сегодняшний контент:</b>
-https://drive.google.com/drive/folders/120rWAXrR-TsqjRtlqDBFo2BToMpgqsmc?usp=sharing""",
+https://drive.google.com/drive/folders/120rWAXrR-TsqjRtlqdBfo2BToMpgqsmc?usp=sharing""",
         "step_3_btn": "Видео выбрано",
 
         "step_4": """<b>Шаг 4. Забери Stories:</b>
-https://drive.google.com/drive/folders/18rY4sr4S-FKPXC5b4jQ5t3dGD9mhnDRP?usp=sharing
+https://drive.google.com/drive/folders/18rY4sr4S-FKPXC5b4jQ5t3dGD9mhnDRp?usp=sharing
 
 Stories готовы — используй их как дополнительное касание с аудиторией.""",
         "step_4_btn": "Stories сохранены",
@@ -582,17 +582,17 @@ Stories готовы — используй их как дополнительн
         "step_1_btn": "Текст готов",
 
         "step_2": """<b>Шаг 2. Забери фото для поста:</b>
-https://drive.google.com/drive/folders/1EpdWANiX4umCIgeZ6p5qnEZwSKEe84Bv?usp=sharing
+https://drive.google.com/drive/folders/1EpdWANiX4umCigeZ6pSqNEZwSKEe84Bv?usp=sharing
 
 Используй этот визуал для оформления сегодняшнего поста.""",
         "step_2_btn": "Визуал забрал",
 
         "step_3": """<b>Шаг 3. Выбери ролик, которое лучше всего подходит под твою аудиторию и формат:</b>
-https://drive.google.com/drive/folders/16WmmZ84Ex7IBlmXWHKC4YUQHrFUB4duw?usp=sharing""",
+https://drive.google.com/drive/folders/16WmmZd4Ex7iBfmXWHKC4YUQHrFUB4duw?usp=sharing""",
         "step_3_btn": "Видео готово",
 
         "step_4": """<b>Шаг 4. Забери готовые Stories и используй их как часть сегодняшнего прогрева:</b>
-https://drive.google.com/drive/folders/1Qp5Kuf4UD4XY0Fr8bMydiw7UrEoaw5ne?usp=sharing""",
+https://drive.google.com/drive/folders/1Qp5KuF4UD4XY0FrRbMy0iw7UrEoawSne?usp=sharing""",
         "step_4_btn": "Stories готовы",
 
         "step_5": """<b>Шаг 5. Публикация</b>
@@ -637,17 +637,17 @@ https://drive.google.com/drive/folders/1Qp5Kuf4UD4XY0Fr8bMydiw7UrEoaw5ne?usp=sha
         "step_1_btn": "Текст готов",
 
         "step_2": """<b>Шаг 2. Забери обложку:</b>
-https://drive.google.com/drive/folders/1qy57wdoH_YbHaqfkssDUgQ8hSTFGlxd?usp=sharing
+https://drive.google.com/drive/folders/1cjy57wdoH_YbHagfkssDUgQBhSTFGlxd?usp=sharing
 
 Используй её для оформления сегодняшней публикации.""",
         "step_2_btn": "Визуал забрал",
 
         "step_3": """<b>Шаг 3. Выбери ролик, который лучше всего усилит сегодняшний контент:</b>
-https://drive.google.com/drive/folders/1xiimftEcdp5gDYjkCJJ7NbuqtUTxOxwtWJ?usp=sharing""",
+https://drive.google.com/drive/folders/1ximftEcdpSgDYJkCJ7NbuqtUTxOxwtWj?usp=sharing""",
         "step_3_btn": "Видео готово",
 
         "step_4": """<b>Шаг 4. Забери готовые Stories:</b>
-https://drive.google.com/drive/folders/1DjuS5XDJqSnhSFOFA3D8cd4gRYKZQN0HQ?usp=sharing""",
+https://drive.google.com/drive/folders/1Dju5XDIq5nhSFOFAtDBcd4gRYKZQNOHQ?usp=sharing""",
         "step_4_btn": "Stories готовы",
 
         "step_5": """<b>Шаг 5. Подготовь и опубликуй</b>
@@ -692,17 +692,17 @@ https://drive.google.com/drive/folders/1DjuS5XDJqSnhSFOFA3D8cd4gRYKZQN0HQ?usp=sh
         "step_1_btn": "Текст готов",
 
         "step_2": """<b>Шаг 2. Получи обложку:</b>
-https://drive.google.com/drive/folders/1vNcS6y1VNYgHnZiQUJBSwW9kJwYsO_Luz?usp=sharing
+https://drive.google.com/drive/folders/1vNcS6y1VNYqHnZjQLJBSwW9UwySO_Luz?usp=sharing
 
 Готовый визуал для оформления сегодняшнего поста.""",
         "step_2_btn": "Визуал забрал",
 
         "step_3": """<b>Шаг 3. Подбери ролик, который лучше всего усилит сегодняшний контент:</b>
-https://drive.google.com/drive/folders/1DTM_WxD0R8xmEv8FVlQgfFqhos3S5dAK?usp=sharing""",
+https://drive.google.com/drive/folders/1DTM_WxD0R8xmEv8FViQgfFqhos3S5dAK?usp=sharing""",
         "step_3_btn": "Видео готово",
 
         "step_4": """<b>Шаг 4. Забери Stories:</b>
-https://drive.google.com/drive/folders/1vwKazcXuWVZPLyXahoc_2c_1krxoqufg?usp=sharing
+https://drive.google.com/drive/folders/1vwXazcXuWVZPLyXahoc_2c_tkrxoqufg?usp=sharing
 
 Используй stories как дополнительный прогрев аудитории в течение дня.""",
         "step_4_btn": "Stories готовы",
@@ -747,17 +747,17 @@ https://drive.google.com/drive/folders/1vwKazcXuWVZPLyXahoc_2c_1krxoqufg?usp=sha
         "step_1_btn": "Текст выбран",
 
         "step_2": """<b>Шаг 2. Забери обложку для поста:</b>
-https://drive.google.com/drive/folders/1-5Wy_6tQXDHeWJ3sI2HPjrk04rPTVH6f?usp=sharing
+https://drive.google.com/drive/folders/1-5Wy_6tQXDHeWj3sl2HPjrk04rPTVH6f?usp=sharing
 
 Готовый визуал для оформления сегодняшнего поста.""",
         "step_2_btn": "Обложка сохранена",
 
         "step_3": """<b>Шаг 3. Выбери ролик, который лучше всего подходит под твой формат и стиль ведения аккаунта:</b>
-https://drive.google.com/drive/folders/1YuJbuXhSYsq4litE_OgzJjdd91bHBNGPJ?usp=sharing""",
+https://drive.google.com/drive/folders/1YujbuXhSYSq4ltE_Ogzljdd91bHBNGPj?usp=sharing""",
         "step_3_btn": "Видео выбрано",
 
         "step_4": """<b>Шаг 4. Получи Stories:</b>
-https://drive.google.com/drive/folders/1zzTRYpGClyLKf07UDd5KHUquD3sIKFL4?usp=sharing""",
+https://drive.google.com/drive/folders/1zzTRYPGCjyLKF07UDd5KHUquD3sIKFL4?usp=sharing""",
         "step_4_btn": "Stories готовы",
 
         "step_5": """<b>Шаг 5. Уникализация и публикация</b>
@@ -797,15 +797,15 @@ https://drive.google.com/drive/folders/1zzTRYpGClyLKf07UDd5KHUquD3sIKFL4?usp=sha
         "step_1_btn": "Текст выбран",
 
         "step_2": """<b>Шаг 2. Получи обложку:</b>
-https://drive.google.com/drive/folders/1gqbmz9xgm55v1wt_4fK_8nnRuIJGID2h?usp=sharing""",
+https://drive.google.com/drive/folders/1gqbmz9xgm55v1wt_4fK_8nnRuIIGID2h?usp=sharing""",
         "step_2_btn": "Визуал забрал",
 
         "step_3": """<b>Шаг 3. Выбери ролик, который органично впишется в твой контент на сегодня:</b>
-https://drive.google.com/drive/folders/11itKhYuDVp-ZJB63CkCZDM7QTt_R8g_Q?usp=sharing""",
+https://drive.google.com/drive/folders/1tYONm6u69BDic-T-TgQ1Gpn0NAX2fvj_?usp=sharing""",
         "step_3_btn": "Видео выбрано",
 
         "step_4": """<b>Шаг 4. Забери пакет Stories:</b>
-https://drive.google.com/drive/folders/11tS04WyfSdrfI34_uTkRzNRUr6c97Bxz8?usp=sharing
+https://drive.google.com/drive/folders/11itKhYuDVp-ZjB63CkCZDM7QTt_R8g_Q?usp=sharing
 
 Stories подготовлены заранее — просто добавь их в свои публикации сегодня.""",
         "step_4_btn": "Stories готовы",
