@@ -574,11 +574,11 @@ Stories готовы — используй их как дополнительн
 
         "step_1": """<b>Шаг 1. Определи текст для поста</b>
 
-Вариант 1: https://telegra.ph/1-v11d-05-07
+Вариант 1: https://telegra.ph/1-variant-05-16
 
-Вариант 2: https://telegra.ph/2-v11d-05-07
+Вариант 2: https://telegra.ph/2-variant-05-16
 
-Вариант 3: https://telegra.ph/3-v11d-05-07""",
+Вариант 3: https://telegra.ph/3-variant-05-16""",
         "step_1_btn": "Текст готов",
 
         "step_2": """<b>Шаг 2. Забери фото для поста:</b>
@@ -629,11 +629,11 @@ https://drive.google.com/drive/folders/1Qp5KuF4UD4XY0FrRbMy0iw7UrEoawSne?usp=sha
 
         "step_1": """<b>Шаг 1. Выбери основу для поста</b>
 
-Вариант 1: https://telegra.ph/1-v12d-05-07
+Вариант 1: https://telegra.ph/1-variant-05-16-2
 
-Вариант 2: https://telegra.ph/2-v12d-05-07
+Вариант 2: https://telegra.ph/2-variant-05-16-2
 
-Вариант 3: https://telegra.ph/3-v12d-05-07""",
+Вариант 3: https://telegra.ph/3-variant-05-16-2""",
         "step_1_btn": "Текст готов",
 
         "step_2": """<b>Шаг 2. Забери обложку:</b>
@@ -684,11 +684,11 @@ https://drive.google.com/drive/folders/1Dju5XDIq5nhSFOFAIDBcd4gRYKZQNOHQ?usp=sha
 
         "step_1": """<b>ШАГ 1. Определи, какой текст сегодня лучше всего подходит под твою подачу.</b>
 
-Вариант 1: https://telegra.ph/1v-13d-05-07
+Вариант 1: https://telegra.ph/1-variant-05-16-3
 
-Вариант 2: https://telegra.ph/2v-13d-05-07
+Вариант 2: https://telegra.ph/2-variant-05-16-3
 
-Вариант 3: https://telegra.ph/3v-13d-05-07""",
+Вариант 3: https://telegra.ph/3-variant-05-16-3""",
         "step_1_btn": "Текст готов",
 
         "step_2": """<b>Шаг 2. Получи обложку:</b>
@@ -739,11 +739,11 @@ https://drive.google.com/drive/folders/1vwXazcXuWVZPLyXahoc_2c_tkrxoqufg?usp=sha
 
         "step_1": """<b>Шаг 1. Выбери текст для поста</b>
 
-Вариант 1: https://telegra.ph/1v-14d-05-07
+Вариант 1: https://telegra.ph/1-variant-05-16-4
 
-Вариант 2: https://telegra.ph/2v-14d-05-07
+Вариант 2: https://telegra.ph/2-variant-05-16-4
 
-Вариант 3: https://telegra.ph/3v-14d-05-07""",
+Вариант 3: https://telegra.ph/3-variant-05-16-4""",
         "step_1_btn": "Текст выбран",
 
         "step_2": """<b>Шаг 2. Забери обложку для поста:</b>
@@ -789,11 +789,11 @@ https://drive.google.com/drive/folders/1zzTRYpGCjyLKfO7UDd5KHUquD3slKFL4?usp=sha
 
         "step_1": """<b>Шаг 1. Определи, какой текст для публикации.</b>
 
-Вариант 1: https://telegra.ph/1v-15d-05-07
+Вариант 1: https://telegra.ph/1-variant-05-16-6
 
-Вариант 2: https://telegra.ph/2v-15d-05-07
+Вариант 2: https://telegra.ph/2-variant-05-16-6
 
-Вариант 3: https://telegra.ph/3v-15d-05-07""",
+Вариант 3: https://telegra.ph/3-variant-05-16-5""",
         "step_1_btn": "Текст выбран",
 
         "step_2": """<b>Шаг 2. Получи обложку:</b>
